@@ -22,7 +22,7 @@ def signin(request):
     password = request.POST['password']
     
 #validation part    
-    if not re.match("\b[\w\.-]+@[\w\.-]+\.\w{2,4}\b",username):
+    if not re.match("^[\w\.\+\-]+\@[\w]+\.[a-z]{2,3}$",username):
         return JsonResponse({'error':'enter a valid email'})
     
     if len(password) <3:
@@ -33,7 +33,7 @@ def signin(request):
         user = UserModel.objects.get(email=username)
         if user.check_password(password):
             usr_dict = UserModel.objects.filter(email=username).values().first()
-            usr_pop('password')
+            usr_dict.pop('password')
             
             if user.session_token !="0":
                 user.session_token ="0"
