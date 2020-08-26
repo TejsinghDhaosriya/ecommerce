@@ -1,8 +1,15 @@
-from rest_framework import serializers
-from .models import Order
+from rest_framework import routers
+from django.urls import path,include
 
-class OrderSerializers(serializers.HyperlinkedSerializers):
-    class Meta:
-        model =Order
-        fields=('user')
-        
+from . import views
+
+router = routers.DefaultRouter()
+router.register(r'', views.OrderViewSet)
+
+
+urlpatterns = [
+    path('add/<str:id>/<str:token>/',views.add,name='order.add'),
+    path('',include(router.urls)),
+]  
+
+
